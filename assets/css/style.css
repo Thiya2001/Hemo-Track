@@ -1,0 +1,98 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin-top: 56px; /* Adjusted for fixed navbar */
+    background-color: #ffffff; /* Light background color for contrast */
+}
+
+.hero {
+    background-image: url('https://source.unsplash.com/featured/?medical,health');
+    background-size: cover;
+    background-position: center; /* Center the background image */
+    height: 60vh; /* Adjust height for better visibility */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: rgb(0, 0, 0);
+    text-align: center;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    position: relative; /* For overlay positioning */
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* Dark overlay for better text contrast */
+    border-radius: 8px; /* Match the hero section's rounded corners */
+}
+
+h1, h2 {
+    color: #007bff; /* Medical blue color */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Text shadow for better readability */
+}
+
+h1 {
+    font-size: 2.5rem; /* Larger font size for main title */
+}
+
+h2 {
+    font-size: 2rem; /* Slightly larger font size for subheadings */
+}
+
+p.lead {
+    font-size: 1.25rem; /* Slightly larger font size for the lead paragraph */
+}
+
+.btn-danger {
+    background-color: #e4000f; /* Red button color */
+    border: none;
+    transition: background-color 0.3s, transform 0.3s; /* Smooth transition for hover effect */
+    padding: 10px 20px; /* Increased padding for better button size */
+    border-radius: 5px; /* Slightly rounded corners */
+}
+
+.btn-danger:hover {
+    background-color: #db3b4b; /* Darker red on hover */
+    transform: scale(1.05); /* Slight zoom effect on hover */
+}
+
+.container {
+    margin-top: 40px; /* Spacing above the container */
+    background-color: rgb(231, 210, 210); /* White background for the container */
+    padding: 30px; /* Added padding for better content space */
+    border-radius: 8px; /* Slightly rounded corners */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* Shadow effect for the container */
+}
+
+footer {
+    background-color: #343a40; /* Dark footer background */
+    color: rgb(255, 0, 0);
+    padding: 20px 0; /* Added padding */
+}
+
+footer a {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    transition: color 0.3s; /* Smooth color transition */
+}
+
+footer a:hover {
+    color: #ffc107; /* Highlight color on hover */
+    text-decoration: underline;
+}
+
+blockquote {
+    background-color: rgba(240, 148, 148, 0.8); /* Slightly transparent white background for the blockquote */
+    padding: 20px; /* Added padding */
+    border-left: 5px solid #007bff; /* Left border for emphasis */
+    border-radius: 4px; /* Slightly rounded corners */
+    margin: 20px auto; /* Centered blockquote with margin */
+    max-width: 600px; /* Max width for better readability */
+    font-style: italic; /* Italic style for blockquote */
+}

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="User Dashboard for Blood Donation System - View donors, requests, and your contributions.">
+  <title>User Dashboard - Blood Donation System</title>
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" href="/assets/images/blood_655983.png">
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-danger">
+    <div class="container">
+      <a class="navbar-brand" href="index.html" style="color: black;">
+        <img src="assets/images/logo.png" alt="Blood Donation Logo" width="30" height="30" class="d-inline-block align-top">
+        Blood Donation System
+      </a>
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="user_home.html" style="color: black;">user-home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="index.html" onclick="logout()" style="color: black;">Logout</a>
+          </li>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <div class="container mt-4">
+    <div class="row">
+        <!-- Overview Cards -->
+        <div class="col-md-3">
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Total Donors</h5>
+                    <p class="card-text" id="total-donors">120</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Blood Stock</h5>
+                    <p class="card-text" id="blood-stock">300</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-warning mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Registered Users</h5>
+                    <p class="card-text" id="registered-users">150</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-danger mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Blood Requests</h5>
+                    <p class="card-text" id="blood-requests">10</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Predefined Details Section -->
+    <div class="row mb-4">
+      <div class="col-md-12">
+        <div class="card shadow">
+          <div class="card-header bg-secondary text-white">
+            Important Information
+          </div>
+          <div class="card-body">
+            <h5>Eligibility Criteria for Blood Donation</h5>
+            <ul>
+              <li>Age: 18 to 65 years</li>
+              <li>Weight: At least 50 kg</li>
+              <li>Hemoglobin: Minimum 12.5 g/dL</li>
+              <li>No major surgery or illness in the last 6 months</li>
+              <li>No alcohol consumption 24 hours prior</li>
+            </ul>
+            <h5>Contact Us</h5>
+            <p>If you have any questions, please reach out to our helpline at <strong>(123) 456-7890</strong> or email us at <strong>support@blooddonationsystem.com</strong>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Blood Donors List -->
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card shadow mb-4">
+          <div class="card-header bg-primary text-white">
+            Available Blood Donors
+          </div>
+          <div class="card-body">
+            <table class="table table-striped" id="donors-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Blood Group</th>
+                  <th>Contact</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Kali</td>
+                  <td>A+</td>
+                  <td>(555) 123-4567</td>
+                </tr>
+                <tr>
+                  <td>Arun</td>
+                  <td>O-</td>
+                  <td>(555) 234-5678</td>
+                </tr>
+                <tr>
+                  <td>Ram</td>
+                  <td>B+</td>
+                  <td>(555) 345-6789</td>
+                </tr>
+                <tr>
+                  <td>Roja</td>
+                  <td>AB+</td>
+                  <td>(555) 456-7890</td>
+                </tr>
+                <tr>
+                  <td colspan="3" class="text-center">
+                    <div class="spinner-border" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Your Blood Requests Chart -->
+      <div class="col-md-6">
+        <div class="card shadow">
+          <div class="card-header bg-success text-white">
+            Your Blood Requests
+          </div>
+          <div class="card-body">
+            <canvas id="userRequestsChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS (including Popper) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- Firebase and Custom JS -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+  <script src="assets/js/firebase-config.js"></script>
+  <script src="assets/js/script.js"></script>
+
+  <script>
+    // Initialize Firebase
+    const firebaseConfig = {
+      // Your Firebase config here
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    const db = firebase.firestore();
+
+    // Function to load dashboard data
+    function loadDashboardData() {
+      // Predefined data (for demonstration purposes)
+      const predefinedDonors = [
+        { name: "Kali", bloodGroup: "A+", contact: "(555) 123-4567" },
+        { name: "Arun", bloodGroup: "O-", contact: "(555) 234-5678" },
+        { name: "Ram", bloodGroup: "B+", contact: "(555) 345-6789" },
+        { name: "Roja", bloodGroup: "AB+", contact: "(555) 456-7890" }
+      ];
+
+      // Set total donors and display predefined donors
+      document.getElementById('total-donors').textContent = predefinedDonors.length;
+      const tableBody = document.getElementById('donors-table').getElementsByTagName('tbody')[0];
+      tableBody.innerHTML = ''; // Clear existing rows
+      predefinedDonors.forEach(donor => {
+        const newRow = tableBody.insertRow();
+        newRow.innerHTML = `
+          <td>${donor.name}</td>
+          <td>${donor.bloodGroup}</td>
+          <td>${donor.contact}</td>
+        `;
+      });
+
+      // Sample chart for user blood requests
+      const ctx = document.getElementById('userRequestsChart').getContext('2d');
+      const userRequestsChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Request 1', 'Request 2', 'Request 3'],
+          datasets: [{
+            label: 'Blood Requests',
+            data: [2, 1, 3],
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
+
+    window.onload = loadDashboardData;
+    
+    function logout() {
+      firebase.auth().signOut().then(() => {
+        alert("Logged out successfully!");
+        window.location.href = "index.html";
+      }).catch((error) => {
+        console.error("Error during logout: ", error);
+      });
+    }
+  </script>
+</body>
+</html>

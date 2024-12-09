@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Request Blood - Blood Donation System</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        /* Optional: Darken background when modal is open */
+        body.modal-open .modal-backdrop {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Trigger Button for Modal (optional) -->
+    <div class="container mt-5 text-center">
+        <a href="user_home.html"><b>Back</b></a>
+    </div>
+
+    <!-- Blood Request Modal -->
+    <div class="modal fade" id="requestModal" tabindex="-1" aria-labelledby="requestModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="requestModalLabel">Request Blood</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="requestForm">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="bloodGroup" class="form-label">Blood Group</label>
+                            <input type="text" class="form-control" id="bloodGroup" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="location" class="form-label">Location</label>
+                            <input type="text" class="form-control" id="location" required>
+                        </div>
+                        <button type="submit" class="btn btn-danger w-100">Send Request</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase JS SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+
+    <!-- Firebase Config and Initialization -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBnnhV10gVqSiYaU5a_ST7N8hPTjIV6PX0",
+            authDomain: "blooddoner-4f9dd.firebaseapp.com",
+            projectId: "blooddoner-4f9dd",
+            storageBucket: "blooddoner-4f9dd.appspot.com",
+            messagingSenderId: "735634301432",
+            appId: "1:735634301432:web:863ceef0d404e79265360d"
+        };
+
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        document.getElementById('requestForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const bloodGroup = document.getElementById('bloodGroup').value;
+            const location = document.getElementById('location').value;
+
+            db.collection("requests").add({
+                name: name,
+                bloodGroup: bloodGroup,
+                location: location,
+                status: 'pending'
+            })
+            .then(() => {
+                alert("Blood request submitted successfully.");
+                document.getElementById('requestForm').reset();
+                // Close the modal
+                let modalElement = document.getElementById('requestModal');
+                let modal = bootstrap.Modal.getInstance(modalElement);
+                modal.hide();
+            })
+            .catch((error) => {
+                alert("Error submitting request: " + error.message);
+            });
+        });
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Optional JavaScript to auto-show modal on page load -->
+    <script>
+        window.onload = function() {
+            let requestModal = new bootstrap.Modal(document.getElementById('requestModal'));
+            requestModal.show();
+        };
+    </script>
+
+</body>
+</html>
